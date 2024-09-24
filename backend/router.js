@@ -55,10 +55,13 @@ router.delete('/:id', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-  try {
-      const productsData = await Product.find()
-      console.log(productsData)
-      return res.status(200).json({message:'All Posts',productsData})
+    try {
+        const page = req.query.page || 1
+        const limit = req.query.limit || 6
+        const skip=page*limit-limit
+      const postsData = await Post.find({}).skip(skip).limit(limit)
+      console.log(postsData)
+      return res.status(200).json({message:'All Posts',postsData})
 
   } catch (error) {
     return res.status(500).json({error:error.message})
