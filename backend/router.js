@@ -58,10 +58,12 @@ router.get('/', async (req, res) => {
     try {
         const page = req.query.page || 1
         const limit = req.query.limit || 6
-        const skip=page*limit-limit
+        const skip = (page -1) * limit
+        const totalPosts = await Post.countDocuments();
+
       const postsData = await Post.find({}).skip(skip).limit(limit)
       console.log(postsData)
-      return res.status(200).json({message:'All Posts',postsData})
+      return res.status(200).json({message:'All Posts',postsData,totalPosts})
 
   } catch (error) {
     return res.status(500).json({error:error.message})
