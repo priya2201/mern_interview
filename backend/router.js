@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
             isEditable
         })
         await addData.save()
-        console.log(addData)
+        // console.log(addData)
         return res.status(201).json({message:'Post Created Successfully',addData})
     } catch (error) {
         return res.status(500).json({error:error.message})
@@ -19,6 +19,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
+        console.log('in')
         const isData = await Post.findById(req.params.id)
         if (!isData) {
             return res.status(404).json({message:'Post Data not Found'})
@@ -30,7 +31,7 @@ router.put('/:id', async (req, res) => {
             content,
             isEditable
         })
-        console.log(editPost)
+        console.log(editPost,'e')
         return res.status(200).json({message:'Post Updated Successfully',editPost})
     } catch (error) {
         return res.status(500).json({error:error.message})
@@ -38,15 +39,15 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
-    try {
+router.delete('/delete/:id', async (req, res) => {
+    try {console.log('deletee')
         const isData = await Post.findById(req.params.id)
         if (!isData) {
             return res.status(404).json({message:'Post Data not Found'})
         }
 
         let deletePost = await Post.findByIdAndDelete(req.params.id)
-        console.log(deletePost)
+        console.log(deletePost,'dl')
         return res.status(200).json({message:'Post Deleted Successfully',deletePost})
     } catch (error) {
         return res.status(500).json({error:error.message})
@@ -62,7 +63,7 @@ router.get('/', async (req, res) => {
         const totalPosts = await Post.countDocuments();
 
       const postsData = await Post.find({}).skip(skip).limit(limit)
-      console.log(postsData)
+        console.log(postsData.length,totalPosts)
       return res.status(200).json({message:'All Posts',postsData,totalPosts})
 
   } catch (error) {
@@ -79,7 +80,7 @@ router.get('/:id', async (req, res) => {
         }
 
         let getPost = await Post.findById(req.params.id)
-        console.log(getPost)
+        // console.log(getPost)
         return res.status(200).json({message:'Single post Data',getPost})
     } catch (error) {
         return res.status(500).json({error:error.message})
